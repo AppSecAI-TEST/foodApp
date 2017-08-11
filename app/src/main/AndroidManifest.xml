@@ -14,19 +14,20 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/Theme.ToolBar.Food">
+            android:theme="@style/Theme.ToolBar.Food" />
+        <activity android:name=".activity.SetActivity" />
+        <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.BuyUpdateActivity" />
+        <activity android:name=".activity.BuyActivity" />
+        <activity android:name=".activity.LoveActivity" />
+        <activity android:name=".activity.AddAddressActivity" />
+        <activity android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SetActivity"/>
-        <activity android:name=".activity.AddressActivity"/>
-        <activity android:name=".activity.BuyUpdateActivity"/>
-        <activity android:name=".activity.BuyActivity"/>
-        <activity android:name=".activity.LoveActivity"/>
-        <activity android:name=".activity.AddAddressActivity"/>
     </application>
 
 </manifest>
