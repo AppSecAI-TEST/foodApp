@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.administrator.foodapp.R;
 import com.example.administrator.foodapp.activity.AddressActivity;
+import com.example.administrator.foodapp.activity.LoveActivity;
 import com.example.administrator.foodapp.activity.MainActivity;
 import com.example.administrator.foodapp.activity.SetActivity;
 import com.example.administrator.foodapp.bean.Account;
@@ -155,6 +156,10 @@ public class AccountFragment extends Fragment {
                 }
                 break;
             case R.id.love_relative:
+                if (login) {
+                    Intent buy_intent = new Intent(getActivity(), LoveActivity.class);
+                    startActivity(buy_intent);
+                }
                 break;
         }
     }

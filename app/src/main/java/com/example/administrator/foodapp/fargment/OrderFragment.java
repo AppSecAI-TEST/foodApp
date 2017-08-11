@@ -152,6 +152,7 @@ public class OrderFragment extends Fragment {
                     } else {
                         setAdapter(list);
                         orderRecyclerView.setAdapter(myAdapter);
+                        i = 0;
                     }
                 }
 

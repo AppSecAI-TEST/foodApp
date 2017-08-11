@@ -83,4 +83,17 @@ public interface NetUtils {
     @FormUrlEncoded
     @POST("/foodApp/getAddress.buy")
     Call<String> getAddress( @Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("/foodApp/addLove.love")
+    Call<String> getAddLoveInfo( @Field("loginName") String loginName,@Field("love") String love);
+
+
+    @FormUrlEncoded
+    @POST("/foodApp/getLoveInfo.love")
+    Call<String> getLoveInfo( @Field("loginName") String loginName);
+
+    @FormUrlEncoded
+    @POST("/foodApp/deleteLove.love")
+    Call<String> getDeleteLoveInfo( @Field("id") String id);
 }

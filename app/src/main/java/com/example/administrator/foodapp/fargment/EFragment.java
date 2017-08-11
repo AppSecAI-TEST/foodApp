@@ -1,11 +1,14 @@
 package com.example.administrator.foodapp.fargment;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.androidkun.PullToRefreshRecyclerView;
 import com.androidkun.callback.PullToRefreshListener;
@@ -50,6 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class EFragment extends Fragment {
     @BindView(R.id.toolBar)
@@ -63,7 +68,7 @@ public class EFragment extends Fragment {
     private List<Food> list;
     private Food f;
     private NetUtils net;
-    private boolean login = false;
+    private boolean login = false;//是否登录
     private File localFile;
 
     @Nullable
@@ -75,7 +80,7 @@ public class EFragment extends Fragment {
         setHasOptionsMenu(true);
         toolBar.setTitle(R.string.app_name);
         toolBar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        if (TokenUtils.getCachedToken(getContext()) != null) {
+        if (TokenUtils.getCachedToken(getContext()) != null) {//获取登录状态
             login = true;
         }
         cache = new File(Environment.getExternalStorageDirectory(), "cache");
@@ -88,6 +93,7 @@ public class EFragment extends Fragment {
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 //        eRecycler.setLayoutManager(layoutManager);
         Retrofit retrofit = new Retrofit.Builder().baseUrl(NetUtils.URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
         net = retrofit.create(NetUtils.class);
         Log.d("debug", NetUtils.URL + "/foodApp/food/food.xml");
@@ -130,6 +136,9 @@ public class EFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 获取后台xml数据
+     */
     private void getXmlInfo() {
         final PullXML pullXML = new PullXML(list, f);
         Call<ResponseBody> call = net.downloadFile(NetUtils.URL + "/foodApp/food/food.xml");
@@ -162,6 +171,9 @@ public class EFragment extends Fragment {
         unbinder.unbind();
     }
 
+    /**
+     * @param list  适配器
+     */
     private void setAdapter(List<Food> list) {
 
         myAdapter = new BaseAdapter(getActivity(), list, R.layout.item_e) {
@@ -234,7 +246,29 @@ public class EFragment extends Fragment {
 
             @Override
             public void onItemLongClick(View v, int position) {
+                Log.i("ddd",position+"");
+                f = (Food) myAdapter.getItemPosition(position);
+                Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("收藏")
+                        .setIcon(R.drawable.love)
+                        .setMessage("是否收藏？")
+                        .setPositiveButton("确定",  new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                net.getAddLoveInfo(TokenUtils.getCachedToken(getContext()),f.getTitle()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        Toast.makeText(getContext(),response.body().trim(),Toast.LENGTH_SHORT).show();
+                                    }
 
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+
+                                    }
+                                });
+                            }
+                        })
+                        .setNeutralButton("取消", null)
+                        .create();dialog.show();
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.administrator.foodapp.utils;
 
 import com.example.administrator.foodapp.bean.Account;
 import com.example.administrator.foodapp.bean.Buy;
+import com.example.administrator.foodapp.bean.Love;
 import com.example.administrator.foodapp.bean.Order;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -52,6 +53,18 @@ public class JsonUtils {
         try {
             // TypeToken 是google提供的一个解析Json数据的类库中一个类
             List<Order> list = gson.fromJson(jsonData, new TypeToken<List<Order>>(){}.getType());
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+        return null;
+    }
+    public static List<Love> parseLoveListString(String jsonData) {
+        Gson gson = new Gson();
+        try {
+            // TypeToken 是google提供的一个解析Json数据的类库中一个类
+            List<Love> list = gson.fromJson(jsonData, new TypeToken<List<Love>>(){}.getType());
             return list;
         } catch (Exception e) {
             e.printStackTrace();
